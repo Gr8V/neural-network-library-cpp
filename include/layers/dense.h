@@ -1,4 +1,4 @@
-#include <tensor.h>
+#include "maths/tensor.h"
 
 
 class Dense {

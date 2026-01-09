@@ -1,3 +1,3 @@
-#include "maths/tensor.h";
+#include "maths/tensor.h"
 
-static Tensor image_to_tensor(const std::vector<float>& image);
+Tensor image_to_tensor(const std::vector<float>& image);
