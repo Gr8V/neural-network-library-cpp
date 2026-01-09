@@ -3,6 +3,7 @@
 #include "maths/tensor.h"
 #include "mnist/mnist.h"
 #include "layers/dense.h"
+#include "layers/relu.h"
 #include "network.h"
 
 int main() {
@@ -18,9 +19,11 @@ int main() {
         );
 
         Dense d(784, 128);
+        ReLU relu;
         Tensor x = image_to_tensor(train.images[0]);
         Tensor y = d.forward(x);
-        std::cout << y.rows << " " << y.cols << std::endl;
+        Tensor z = relu.forward(y);
+        std::cout << z.rows << " " << z.cols << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";

@@ -1,4 +1,4 @@
-#include "layers/dense.h";
+#include "layers/dense.h"
 #include <random>
 
 Dense::Dense(int in, int out)
