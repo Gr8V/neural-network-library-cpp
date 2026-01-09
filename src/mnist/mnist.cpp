@@ -1,4 +1,4 @@
-#include "mnist.h"
+#include "mnist/mnist.h"
 #include <fstream>
 #include <stdexcept>
 #include <iostream>

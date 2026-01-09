@@ -46,3 +46,14 @@ void Tensor::randomize(float min, float max) {
 int Tensor::size() const {
     return rows * cols;
 }
+
+// Image To Tensor
+Tensor image_to_tensor(const std::vector<float>& image) {
+    Tensor x(784, 1);
+
+    for (int i = 0; i < 784; ++i) {
+        x(i, 0) = image[i];
+    }
+
+    return x;
+}
