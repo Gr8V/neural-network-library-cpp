@@ -22,12 +22,6 @@ float SoftmaxCrossEntropyLoss::forward(const Tensor& logits, int lbl) {
         probs(i, 0) /= sum;
     }
     float probsum = 0;
-    for (size_t i = 0; i < probs.rows; i++)
-    {
-        std::cout << probs(i,0) << std::endl;
-        probsum += probs(i,0);
-    }
-    std::cout << probsum << std::endl;
 
     return -std::log(probs(label, 0) + 1e-9f);
 }
