@@ -7,43 +7,30 @@
 #include "losses/softmax_cross_entropy_loss.h"
 #include "network.h"
 #include "optimizers/SGD.h"
+#include "training/trainer.h"
 
 int main() {
-    Network net;
-    SoftmaxCrossEntropyLoss loss_fn;
-    SGD optimizer(0.01f);
     try {
         auto train = loadMNIST(
             "data/train-images.idx3-ubyte",
             "data/train-labels.idx1-ubyte"
         );
-        // Convert MNIST image to tensor (784 × 1)
-        Tensor image = net.image_to_tensor(train.images[0]);
-        int label = train.labels[0];
+        auto test = loadMNIST(
+            "data/t10k-images.idx3-ubyte",
+            "data/t10k-labels.idx1-ubyte"
+        );
 
-        // Forward
-        Tensor logits = net.forward(image);
-        float loss = loss_fn.forward(logits, label);
+        Network net;
+        SoftmaxCrossEntropyLoss loss_fn;
+        SGD optimizer(0.01f);
 
-        // Backward
-        Tensor grad_logists = loss_fn.backward();
-        net.backward(grad_logists);
+        Trainer trainer(net, loss_fn, optimizer);
 
-        // Update
+        trainer.train(train, 5);
 
-        // Debug
-        for (int i = 0; i < 100; ++i) {
-            Tensor logits = net.forward(image);
-            float loss = loss_fn.forward(logits, label);
-
-            Tensor grad = loss_fn.backward();
-            net.backward(grad);
-            optimizer.step(net);
-
-            std::cout << loss << std::endl;
-        }
-
-
+        float test_acc = trainer.evaluate(test);
+        std::cout << "Test Accuracy: "
+                  << test_acc * 100.0f << "%\n";
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
     }
