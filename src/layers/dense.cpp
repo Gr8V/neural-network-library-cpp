@@ -5,7 +5,9 @@ Dense::Dense(int in, int out)
     : W(out, in), b(out, 1)
 {
     std::mt19937 gen(std::random_device{}());
-    std::uniform_real_distribution<float> dist(-0.1f, 0.1f);
+    float stddev = std::sqrt(2.0f / in);
+    std::normal_distribution<float> dist(0.0f, stddev);
+
 
     for (int i = 0; i < W.rows; ++i) {
         for (int j = 0; j < W.cols; ++j) {

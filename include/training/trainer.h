@@ -11,7 +11,7 @@ public:
             SGD& optimizer);
 
     void train(const MNISTDataset& train_data, int epochs);
-    float evaluate(const MNISTDataset& test_data);
+    void evaluate(const MNISTDataset& test_data);
 
 private:
     Network& net;

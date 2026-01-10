@@ -12,6 +12,11 @@ void Trainer::train(const MNISTDataset& train_data, int epochs) {
         float total_loss = 0.0f;
         int correct = 0;
 
+        if (epoch == 3)
+            optimizer.lr = 0.005f;
+        if (epoch == 6)
+            optimizer.lr = 0.001f;
+
         for (size_t i = 0; i < train_data.images.size(); ++i) {
             Tensor image = net.image_to_tensor(train_data.images[i]);
             int label = train_data.labels[i];
@@ -43,19 +48,29 @@ void Trainer::train(const MNISTDataset& train_data, int epochs) {
     }
 }
 
-float Trainer::evaluate(const MNISTDataset& test_data) {
+void Trainer::evaluate(const MNISTDataset& test_data) {
     int correct = 0;
+    float total_loss = 0.0f;
 
     for (size_t i = 0; i < test_data.images.size(); ++i) {
         Tensor image = net.image_to_tensor(test_data.images[i]);
         int label = test_data.labels[i];
 
         Tensor logits = net.forward(image);
-        int pred = argmax(logits);
+        float loss = loss_fn.forward(logits, label);
+        total_loss += loss;
 
+        int pred = argmax(logits);
         if (pred == label)
             correct++;
     }
 
-    return (float)correct / test_data.images.size();
+    float accuracy =
+        (float)correct / test_data.images.size();
+    float avg_loss =
+        total_loss / test_data.images.size();
+
+    std::cout << "Test Loss: " << avg_loss << "\n";
+    std::cout << "Test Accuracy: "
+              << accuracy * 100.0f << "%\n";
 }

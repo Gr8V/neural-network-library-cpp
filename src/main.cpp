@@ -26,13 +26,10 @@ int main() {
 
         Trainer trainer(net, loss_fn, optimizer);
 
-        trainer.train(train, 5);
+        trainer.train(train, 8);
 
-        float test_acc = trainer.evaluate(test);
-        std::cout << "Test Accuracy: "
-                  << test_acc * 100.0f << "%\n";
+        trainer.evaluate(test);
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
     }
-
 }

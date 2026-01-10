@@ -1,11 +1,10 @@
 #include "network.h"
 
 Network::Network()
-    : d1(784, 128),
-    d2(128, 64),
-    d3(64, 10)
-{
-}
+    : d1(784, 256),
+    d2(256, 128),
+    d3(128, 10)
+{}
 
 Tensor Network::forward(const Tensor& x) {
     Tensor out = d1.forward(x);
