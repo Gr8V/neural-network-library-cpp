@@ -19,6 +19,29 @@ Tensor Network::forward(const Tensor& x) {
     return out; // logits (10 × 1)
 }
 
+void Network::backward(const Tensor& grad_logits) {
+    // grad_logits: (10 × 1)
+
+    Tensor grad = grad_logits;
+
+    // Last Dense (64 → 10)
+    grad = d3.backward(grad);
+
+    // ReLU (after d2)
+    grad = r2.backward(grad);
+
+    // Dense (128 → 64)
+    grad = d2.backward(grad);
+
+    // ReLU (after d1)
+    grad = r1.backward(grad);
+
+    // Dense (784 → 128)
+    grad = d1.backward(grad);
+
+    // grad now is ∂Loss / ∂input (unused)
+}
+
 Tensor Network::image_to_tensor(const std::vector<float>& image) {
     Tensor x(784, 1);
     for (int i = 0; i < 784; ++i)

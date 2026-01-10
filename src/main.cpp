@@ -21,10 +21,12 @@ int main() {
 
         Tensor logits = net.forward(image);
         float loss = loss_fn.forward(logits, label);
-        Tensor grad_out = loss_fn.backward();
+        Tensor grad_logists = loss_fn.backward();
+        net.backward(grad_logists);
 
         // Debug
         std::cout << "LOSS = " << loss << std::endl;
+        std::cout << net.d1.dW(0,0) << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
