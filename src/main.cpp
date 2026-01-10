@@ -7,6 +7,7 @@
 #include "network.h"
 
 int main() {
+    Network net;
     try {
         auto train = loadMNIST(
             "data/train-images.idx3-ubyte",
@@ -18,12 +19,13 @@ int main() {
             train.cols
         );
 
-        Dense d(784, 128);
-        ReLU relu;
-        Tensor x = image_to_tensor(train.images[0]);
-        Tensor y = d.forward(x);
-        Tensor z = relu.forward(y);
-        std::cout << z.rows << " " << z.cols << std::endl;
+        // Convert MNIST image to tensor (784 × 1)
+        Tensor image = net.image_to_tensor(train.images[0]);
+
+        Tensor logits = net.forward(image);
+
+        // Debug
+        std::cout << logits.rows << " " << logits.cols << std::endl;
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";
