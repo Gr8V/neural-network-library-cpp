@@ -35,5 +35,44 @@ Tensor Dense::forward(const Tensor& x) {
         out(i, 0) = sum + b(i, 0);
     }
 
+    // y = W*x + b
     return out;
+}
+
+Tensor Dense::backward(const Tensor& grad_out) {
+    // grad_out shape: (out × 1)
+    // input shape:    (in × 1)
+    // W shape:        (out × in)
+
+    int out = W.rows; // 10
+    int in  = W.cols; // 64
+
+    // Initialize gradients
+    dW = Tensor(out, in);
+    db = Tensor(out, 1);
+
+    // Compute dW = grad_out * input^T
+    for (int i = 0; i < out; ++i) {
+        for (int j = 0; j < in; ++j) {
+            dW(i, j) = grad_out(i, 0) * input(j, 0);
+        }
+    }
+
+    // Compute db = grad_out
+    for (int i = 0; i < out; ++i) {
+        db(i, 0) = grad_out(i, 0);
+    }
+
+    // Compute grad_input = W^T * grad_out
+    Tensor grad_input(in, 1);
+
+    for (int j = 0; j < in; ++j) {
+        float sum = 0.0f;
+        for (int i = 0; i < out; ++i) {
+            sum += W(i, j) * grad_out(i, 0);
+        }
+        grad_input(j, 0) = sum;
+    }
+
+    return grad_input;
 }

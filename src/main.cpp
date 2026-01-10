@@ -21,7 +21,7 @@ int main() {
 
         Tensor logits = net.forward(image);
         float loss = loss_fn.forward(logits, label);
-        Tensor grad = loss_fn.backward();
+        Tensor grad_out = loss_fn.backward();
 
         // Debug
         std::cout << "LOSS = " << loss << std::endl;
