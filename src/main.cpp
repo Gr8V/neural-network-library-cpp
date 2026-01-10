@@ -4,10 +4,12 @@
 #include "mnist/mnist.h"
 #include "layers/dense.h"
 #include "layers/relu.h"
+#include "layers/softmax.h"
 #include "network.h"
 
 int main() {
     Network net;
+    SoftMax sm;
     try {
         auto train = loadMNIST(
             "data/train-images.idx3-ubyte",
@@ -23,9 +25,17 @@ int main() {
         Tensor image = net.image_to_tensor(train.images[0]);
 
         Tensor logits = net.forward(image);
+        Tensor probs = sm.forward(logits);
 
         // Debug
-        std::cout << logits.rows << " " << logits.cols << std::endl;
+        std::cout << probs.rows << " " << probs.cols << std::endl;
+        float sum = 0.f;
+        for (size_t i = 0; i < probs.rows; i++)
+        {
+            std::cout << probs(i,0) << std::endl;
+            sum += probs(i,0);
+        }
+        std::cout << "SUM = " << sum;
 
     } catch (const std::exception& e) {
         std::cerr << e.what() << "\n";

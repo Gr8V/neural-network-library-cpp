@@ -46,3 +46,12 @@ void Tensor::randomize(float min, float max) {
 int Tensor::size() const {
     return rows * cols;
 }
+
+float Tensor::max_value() const {
+    float max_val = data[0];
+    for (float v : data) {
+        if (v > max_val)
+            max_val = v;
+    }
+    return max_val;
+}

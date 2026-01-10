@@ -23,4 +23,5 @@ public:
 
     // Shape helpers
     int size() const;
+    float max_value() const;
 };
