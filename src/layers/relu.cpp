@@ -13,3 +13,18 @@ Tensor ReLU::forward(const Tensor& x) {
 
     return out;
 }
+
+Tensor ReLU::backward(const Tensor& grad_out) {
+    Tensor grad_input(input.rows, input.cols);
+
+    for (int i = 0; i < input.rows; ++i) {
+        for (int j = 0; j < input.cols; ++j) {
+            if (input(i, j) > 0.0f)
+                grad_input(i, j) = grad_out(i, j);
+            else
+                grad_input(i, j) = 0.0f;
+        }
+    }
+
+    return grad_input;
+}
